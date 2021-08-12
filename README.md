@@ -23,31 +23,61 @@ Aplicativo para desafio e estudos.
 -   [ ] Django
 -   [ ] Django-Rest-Framework
 -   [ ] Django-Rest-Framework-SimpleJWT
+-   [ ] Postgres
 
+## Configurando o banco de dados
+
+-Instale ou rode um container com postgres com as seguintes credenciais:
+
+
+```cl
+        'USER': 'postgres',
+        'PASSWORD': 'root',
+        'HOST': '127.0.0.1',
+        'PORT': '5432'
+```
 
 ## Executando o projeto
 
-<!-- Utilize o **yarn** ou o **npm install** para instalar as dependências do projeto.
+faça um clone do projeto e logo em seguida inicie um ambiente virtual, tendo o python instalado.
 Em seguida, siga o passo a passo:
-- Rode o comando abaixo, dentro da raiz do projeto, para subir Dados Fakes com Jason Server -
+- Rode o comando abaixo, dentro da raiz do projeto -
 
 ```cl
-yarn server
+  python3 -m venv env
 ```
-- Rode o comando abaixo, dentro da raiz do projeto, para rodar a aplicação -
+
+- Rode o comando abaixo, para ativar o ambiente, dentro da raiz do projeto -
 
 ```cl
-yarn start
+  source env/bin/activate #linux
+  env\Scripts\activate #windows
 ```
+- Rode os comando abaixo, dentro da raiz do projeto, para instalar as dependências na vm -
 
-- Dados para login -
+```cl
+pip install django
+pip install djangorestframework
+pip install djangorestframework-simplejwt
+pip install psycopg2-binary
+pip install django-cors-headers
+```
+- ou mais simples
+
+```cl
+pip install -r requirements.txp
+```
+- Rode os comando abaixo, para migrar as alterações ao banco -
+
+```cl
+python manage.py migrate 
+python manage.py makemigrations #se necessário, depois rode o comando acima desse
+```
+- Rode a api -
 
 ```ts
-    {
-        email: 'ailton@example.com',
-        password: '123',
-    }
-``` -->
+    python manage.py runserver 
+```
 
 <br />
 
