@@ -15,7 +15,7 @@ class Address(models.Model):
 
 class Client(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, related_name='client', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     phone = models.CharField(max_length=100)
     create_at = models.DateField(auto_now_add=True)

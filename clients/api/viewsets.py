@@ -4,6 +4,6 @@ from clients.api import serializers
 from rest_framework.permissions import IsAuthenticated
 
 class ClientViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     serializer_class = serializers.ClientSerializer
     queryset = models.Client.objects.all()
