@@ -1,5 +1,7 @@
 from django.db.models import fields
 from rest_framework import serializers
+from rest_framework.response import Response
+from rest_framework.decorators import action
 from clients import models
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -10,14 +12,5 @@ class AddressSerializer(serializers.ModelSerializer):
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Client
-        fields = ['id','name', 'phone', 'address']
+        fields = '__all__'
     address = AddressSerializer(many=False)
-
-    def create(self,request, *args, **kwargs ):
-        client_data = request
-
-        new_address = models.Address.objects.create(**client_data['address'])
-        new_address.save()
-        client = models.Client.objects.create(name=client_data['name'], phone=client_data['phone'], address=new_address)
-        client.save()
-        return client
