@@ -1,15 +1,18 @@
-from users import models
-from rest_framework import viewsets
-from users.api import serializers
-from rest_framework.permissions import IsAuthenticated
+from .serializers import MyTokenObtainPairSerializer
+from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.views import TokenObtainPairView
+from django.contrib.auth.models import User
+from .serializers import RegisterSerializer
+from rest_framework import generics
 
-from django.contrib.auth.models import User, Group
+class MyObtainTokenPairView(TokenObtainPairView):
+    permission_classes = (AllowAny,)
+    serializer_class = MyTokenObtainPairSerializer
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = serializers.UserSerializer
-    # permission_classes = [IsAuthenticated]
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer

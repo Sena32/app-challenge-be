@@ -1,26 +1,46 @@
-from django.contrib.auth.models import User
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
-from django.apps import apps
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
+from rest_framework.validators import UniqueValidator
+from django.contrib.auth.password_validation import validate_password
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    @classmethod
+    def get_token(cls, user):
+        token = super(MyTokenObtainPairSerializer, cls).get_token(user)
+
+        # Add custom claims
+        token['email'] = user.email
+        return token
+
+class RegisterSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(
+            required=True,
+            validators=[UniqueValidator(queryset=User.objects.all())]
+            )
+
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=True)
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password']
-    
-    # def create(self, request, **extra_fields):
-    #     user_data = request
-    #     # print(user_data)
-    #     # return
-    #     if not user_data['username']:
-    #         raise ValueError('The given username must be set')
-    #     email = self.normalize_email(user_data['email'])
-    #     # Lookup the real model class from the global app registry so this
-    #     # manager method can be used in migrations. This is fine because
-    #     # managers are by definition working on the real model.
-    #     GlobalUserModel = apps.get_model(self.model._meta.app_label, self.model._meta.object_name)
-    #     username = GlobalUserModel.normalize_username(user_data['username'])
-    #     user = self.model(username=username, email=email, **extra_fields)
-    #     user.password = make_password(user_data['password'])
-    #     user.save(using=self._db)
-    #     return user
+        fields = ('username', 'password', 'password2', 'email')
+
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password2']:
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
+
+        return attrs
+
+    def create(self, validated_data):
+        user = User.objects.create(
+            username=validated_data['username'],
+            email=validated_data['email'],
+        )
+
+        
+        user.set_password(validated_data['password'])
+        user.save()
+
+        return user

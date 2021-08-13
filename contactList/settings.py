@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = 'django-insecure-himob=k!e(0ekvns%r0s=qh9%hta72y&y^1!t2hqcb@wnbz!#('
 SECRET_KEY = 'django-insecure-wf)vt46l*s(hvxas8=45n8j&o)s@uztph=sjrg(&g2mkh_)6g4'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']
 
@@ -38,10 +38,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'allauth.socialaccount',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
     'rest_framework',
     'corsheaders',
     'clients',
+    'users',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -150,6 +160,41 @@ REST_FRAMEWORK ={
 }
 
 
+
+# REST_FRAMEWORK = {
+
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         # 'rest_framework.authentication.BasicAuthentication',
+#         # 'rest_framework.authentication.SessionAuthentication',
+#         'rest_framework.authentication.TokenAuthentication',
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+
+#     ],
+
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+#         # 'rest_framework.permissions.IsAuthenticated',
+#         'rest_framework.permissions.AllowAny',
+#     ],
+    
+#     'TEST_REQUEST_RENDERER_CLASSES': [
+#         'rest_framework.renderers.MultiPartRenderer',
+#         'rest_framework.renderers.JSONRenderer',
+#         'rest_framework.renderers.TemplateHTMLRenderer'
+#     ],
+#     'DEFAULT_THROTTLE_CLASSES': [
+#         'rest_framework.throttling.ScopedRateThrottle',
+#     ],
+    
+#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+#         'PAGE_SIZE': 2
+    
+# }
+
+# REST_AUTH_SERIALIZERS = {
+#     'USER_DETAILS_SERIALIZER': 'users.serializer.UserDetailsSerializer'
+# }
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -173,3 +218,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# AUTH_USER_MODEL = 'users.User'
+ACCOUNT_EMAIL_REQUIRED = False

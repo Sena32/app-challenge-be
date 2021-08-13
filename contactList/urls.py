@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from clients.api import viewsets as clientviewset
-from users.api import viewsets as userviewset
+# from users.api import viewsets as userviewset
 from django.contrib import admin
 from django.urls import path, include
 
@@ -24,16 +24,18 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView
 )
+from users.api import viewsets as userviewset
 
 route = routers.DefaultRouter()
 
-route.register(r'users', userviewset.UserViewSet)
+# route.register(r'users', userviewset.UserViewSet)
 
 route.register(r'clients', clientviewset.ClientViewSet, basename='Clients')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('token/', TokenObtainPairView.as_view()),
+    path('token/', userviewset.MyObtainTokenPairView.as_view()),
+    path('register/', userviewset.RegisterView.as_view()),
     path('token/refresh', TokenRefreshView.as_view()),
     path('token/verify', TokenVerifyView.as_view()),
     path('', include(route.urls))
